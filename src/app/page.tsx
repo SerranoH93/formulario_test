@@ -1,6 +1,6 @@
 "use client"
 
-import { useForm } from "react-hook-form"; 
+import { useForm, SubmitHandler } from "react-hook-form"; 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { userSchema, mappedPlans } from "@/validations/userSchema";
 
@@ -10,6 +10,7 @@ type Inputs = {
   password: string;
   confirmPassword: string;  
   weight: string;
+  dayOfBirth: string;
   plan: string;
   dateOfBirth: string;
 }
@@ -23,11 +24,15 @@ function Home() {
     return <option value={key} key={key}>{value}</option>
   })
 
-  console.log(errors)
+  console.log(errors);
+
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
+    console.log(data);
+  };
 
   return (
     <div>
-      <form onSubmit={handleSubmit(data => {console.log(data)})}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <label htmlFor="name">Name</label>
         <input type="text" id="name" {...register("name")}/>
         {errors.name?.message && <p>{errors.name?.message}</p>}
@@ -46,6 +51,7 @@ function Home() {
 
         <label htmlFor="dateOfBirth">Date of Birth</label>
         <input type="date" id="dateOfBirth" {...register("dateOfBirth")}/>
+        {errors.dateOfBirth?.message && <p>{errors.dateOfBirth?.message}</p>}
 
         <label htmlFor="weight">Weight</label>
         <input type="text" id="weight" {...register("weight")}/>

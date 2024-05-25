@@ -31,7 +31,13 @@ export const userSchema = z.object({
     weight: z.string().refine((weight) => !isNaN(parseFloat(weight)), {
         message: 'Weight must be a number'
     }),
+    dateOfBirth: z.string().refine(dob => new Date(dob).toString() !== "Invalid Date", {
+        message: "Please enter a valid date of birth"
+    }),
     plan: z.enum(plans, {
         errorMap: () => ({message: 'Please select a plan'})
     })
-})
+}).refine(data => data.password === data.confirmPassword, {
+    message: 'Password must match', 
+    path: ['confirmPassword']
+});
